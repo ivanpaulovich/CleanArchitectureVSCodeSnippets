@@ -1,5 +1,7 @@
 # Clean Architecture C# Snippets for Visual Studio Code
 
+C# Snippets to guide you into implementing a Clean Architecture software based on [Clean Architecture Manga](https://github.com/ivanpaulovich/clean-architecture-manga) coding style.
+
 ## Install
 
 You can find this extension in the Visual Studio Code Marketplace.
