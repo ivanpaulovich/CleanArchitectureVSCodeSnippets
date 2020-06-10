@@ -4,18 +4,23 @@
 
 You can find this extension in the Visual Studio Code Marketplace.
 
-## Index
+## Index of Code Snippets
   
 * [Domain](#domain)
   * [Aggregate Root](#aggregate-root)
   * [Entity](#entity)
   * [Value Object](#value-object)
+  * [Domain Service](#domain-service)
+  * [Factory](#factory)
 * [Application](#application)
   * [Use Case Boundary](#use-case-boundary)
   * [Use Case Implementation](#use-case-implementation)
+  * [Unit of Work](#unit-of-work)
 * [Infrastructure](#infrastructure)
   * [Entity Implementation](#entity-implementation)
   * [Repository Implementation](#repository-implementation)
+  * [Unit of Work Implementation](#unit-of-work-implementation)
+  * [Factory Implementation](#factory-implementation)
 * [User Interface](#user-interface)
   * [Presenter](#presenter)
 
@@ -72,6 +77,24 @@ public readonly struct Name
     public override string ToString()
     {
         return _text;
+    }
+}
+```
+
+### Domain Service
+
+```cs
+public sealed class AccountService
+{
+    private readonly IAccountFactory _accountFactory;
+    private readonly IAccountRepository _accountRepository;
+
+    public AccountService(
+        IAccountFactory accountFactory,
+        IAccountRepository accountRepository)
+    {
+        this._accountFactory = accountFactory;
+        this._accountRepository = accountRepository;
     }
 }
 ```
