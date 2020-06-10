@@ -1,6 +1,6 @@
 # Clean Architecture C# Snippets for Visual Studio Code
 
-C# Snippets to guide you into implementing a Clean Architecture software based on [Clean Architecture Manga](https://github.com/ivanpaulovich/clean-architecture-manga) coding style. It will help you create the project structure, implement the design patterns, put dependencies and frameworks on the the right place.
+C# Snippets to guide you into implementing a software following the Clean Architecture principles. It helps with the project structure, design patterns, dependencies and to use frameworks on the correct way.
 
 ## Install
 
