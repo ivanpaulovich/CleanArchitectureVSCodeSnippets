@@ -4,7 +4,7 @@ C# Snippets to guide you into implementing a software following the Clean Archit
 
 ## Install
 
-You can find this extension in the Visual Studio Code Marketplace.
+You can install [Clean Architecture C# Snippets](https://marketplace.visualstudio.com/items?itemName=ivanpaulovich.clean-architecture-csharp-snippets) from the Visual Studio Code Marketplace.
 
 ## Index of Code Snippets
   
