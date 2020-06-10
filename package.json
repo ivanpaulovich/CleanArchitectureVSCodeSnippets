@@ -1,0 +1,43 @@
+{
+    "name": "clean-architecture-csharp-snippets",
+    "publisher": "ivanpaulovich",
+    "displayName": "Clean Architecture C# Snippets",
+    "description": "Clean Architecture C# Snippets for Visual Studio Code",
+    "icon": "img/clean-architecture-snippets.png",
+    "version": "0.0.1",
+    "author": "Ivan Paulovich",
+    "license": "SEE LICENSE IN LICENSE.md",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ivanpaulovich/CleanArchitectureVSCodeSnippets"
+    },    
+    "categories": [
+        "Languages",
+        "Snippets"
+    ],
+    "keywords": [
+        "CleanArchitecture",
+        ".NET",
+        "C#",
+        "CSharp",
+        "Languages",
+        "Snippets"
+    ],
+    "contributors": [
+        {
+            "name": "Ivan Paulovich",
+            "url": "https://paulovich.net"
+        }
+    ],
+    "engines": {
+        "vscode": "^1.5.0"
+    },
+    "contributes": {
+        "snippets": [
+            {
+                "language": "csharp",
+                "path": "./src/csharp.json"
+            }
+        ]
+    }
+}

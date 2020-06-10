@@ -1,0 +1,12 @@
+{
+    "Creates an entity":{
+		"prefix": "entity",
+		"body": [
+			"public abstract class ${1:MyClass}: {1}",
+			"{",
+			"\t$0",
+			"}"
+			],
+		"description": "Creates an Entity"
+	}
+}
