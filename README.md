@@ -5,30 +5,19 @@
 You can find this extension in the Visual Studio Code Marketplace.
 
 ## Index
-
-### [Domain](#domain)
-
-#### [Aggregate Root](#aggregate-root)
-
-#### [Entity](#entity)
-
-#### [Value Object](#value-object)
-
-### [Application](#application)
-
-#### [Use Case Boundary](#use-case-boundary)
-
-#### [Use Case Implementation](#use-case-implementation)
-
-### [Infrastructure](#infrastructure)
-
-#### [Entity Implementation](#entity-implementation)
-
-#### [Repository Implementation](#repository-implementation)
-
-### [User Interface](#user-interface)
-
-#### [Presenter](#presenter)
+  
+* [Domain](#domain)
+  * [Aggregate Root](#aggregate-root)
+  * [Entity](#entity)
+  * [Value Object](#value-object)
+* [Application](#application)
+  * [Use Case Boundary](#use-case-boundary)
+  * [Use Case Implementation](#use-case-implementation)
+* [Infrastructure](#infrastructure)
+  * [Entity Implementation](#entity-implementation)
+  * [Repository Implementation](#repository-implementation)
+* [User Interface](#user-interface)
+  * [Presenter](#presenter)
 
 ## Domain
 
