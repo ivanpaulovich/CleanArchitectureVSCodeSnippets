@@ -23,6 +23,8 @@ You can find this extension in the Visual Studio Code Marketplace.
   * [Repository Implementation](#repository-implementation)
   * [Unit of Work Implementation](#unit-of-work-implementation)
   * [Factory Implementation](#factory-implementation)
+  * [Unit Of Work Implementation](#entity-context)
+  * [DB Context](#db-context)
 * [User Interface](#user-interface)
   * [Presenter](#presenter)
 
@@ -101,6 +103,14 @@ public sealed class AccountService
 }
 ```
 
+### Factory
+
+```cs
+public interface IAccountFactory
+{
+}
+```
+
 ## Application
 
 ### Use Case Boundary
@@ -155,7 +165,7 @@ public sealed class DepositUseCase : IDepositUseCase
 ### Entity Implementation
 
 ```cs
-public sealed class ConcreteCustomer : Customer
+public sealed class CustomerImpl : Customer
 {
 
 }
@@ -164,7 +174,7 @@ public sealed class ConcreteCustomer : Customer
 ### Repository Implementation
 
 ```cs
-public sealed class ConcreteCustomer : Customer
+public sealed class CustomerRepository : ICustomerRepository
 {
 
 }
@@ -195,40 +205,6 @@ public sealed class DepositPresenter : IDepositOutputPort
 ```cs
 public sealed class DepositResponse
 {
-    public DepositResponse(
-        decimal amount,
-        string description,
-        DateTime transactionDate,
-        decimal updatedBalance)
-    {
-        this.Amount = amount;
-        this.Description = description;
-        this.TransactionDate = transactionDate;
-        this.UpdateBalance = updatedBalance;
-    }
 
-    /// <summary>
-    ///     Gets amount Deposited.
-    /// </summary>
-    [Required]
-    public decimal Amount { get; }
-
-    /// <summary>
-    ///     Gets description.
-    /// </summary>
-    [Required]
-    public string Description { get; }
-
-    /// <summary>
-    ///     Gets transaction Date.
-    /// </summary>
-    [Required]
-    public DateTime TransactionDate { get; }
-
-    /// <summary>
-    ///     Gets updated Balance.
-    /// </summary>
-    [Required]
-    public decimal UpdateBalance { get; }
 }
 ```
