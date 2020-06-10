@@ -10,7 +10,7 @@
     "repository": {
         "type": "git",
         "url": "https://github.com/ivanpaulovich/CleanArchitectureVSCodeSnippets"
-    },    
+    },
     "categories": [
         "Languages",
         "Snippets"
@@ -39,5 +39,9 @@
                 "path": "./src/csharp.json"
             }
         ]
+    },
+    "dependencies": {
+        "npm": "^6.14.5",
+        "vsce": "^1.76.1"
     }
 }
