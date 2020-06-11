@@ -217,4 +217,4 @@ public sealed class DepositResponse
 * [ ] Code analyzers.
 * [ ] Infrastructure.
 
-Features are released quickly. Check out the [Changelog](https://github.com/ivanpaulovich/CleanArchitectureVSCodeSnippets/blob/master/CHANGELOG.md) and give a :star:!
+> Features are released quickly. Check out the [Changelog](https://github.com/ivanpaulovich/CleanArchitectureVSCodeSnippets/blob/master/CHANGELOG.md) and give a :star:!
