@@ -1,1 +1,14 @@
-node_modules/
+.vscode/**
+.vscode-test/**
+out/test/**
+out/**/*.map
+src/**
+coverage/**
+packaged_vsix/**
+.gitignore
+tsconfig.json
+vsc-extension-quickstart.md
+tslint.json
+jest.config.js
+
+coverage/**

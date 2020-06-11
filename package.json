@@ -38,10 +38,45 @@
                 "language": "csharp",
                 "path": "./src/csharp.json"
             }
-        ]
+        ],
+        "commands": [
+            {
+                "command": "extension.createEntity",
+                "title": "Create Entity"
+            }
+        ],
+        "menus": {
+            "explorer/context": [
+                {
+                    "when": "resourceFilename =~ /(.*Domain)/",
+                    "command": "extension.createEntity",
+                    "group": "YourGroup@1"
+                }
+            ]
+        }
     },
     "dependencies": {
         "npm": "^6.14.5",
         "vsce": "^1.76.1"
+    },
+    "scripts": {
+        "vscode:prepublish": "npm run compile",
+        "vscode:package": "vsce package",
+        "vscode:publish": "vsce publish",
+        "compile": "tsc -p ./",
+        "watch": "tsc -watch -p ./",
+        "postinstall": "node ./node_modules/vscode/bin/install",
+        "test": "jest",
+        "test:coverage": "jest --coverage",
+        "test:integration": "npm run compile && node ./node_modules/vscode/bin/test"
+    },
+    "devDependencies": {
+        "@types/jest": "^23.3.11",
+        "@types/node": "^10.12.18",
+        "jest": "^23.6.0",
+        "ts-jest": "^23.10.5",
+        "tslint": "^5.12.0",
+        "typescript": "^3.2.2",
+        "vscode": "^1.1.26"
     }
 }

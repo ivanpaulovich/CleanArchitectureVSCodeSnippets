@@ -1,0 +1,1 @@
+{"version":3,"file":"workspace-util.js","sourceRoot":"","sources":["../../src/utils/workspace-util.ts"],"names":[],"mappings":";;;AAEa,QAAA,kBAAkB,GAAG,CAAC,OAAsC,EAAU,EAAE;IACnF,IAAI,CAAC,OAAO,EAAE;QACZ,OAAO,EAAE,CAAC;KACX;IAED,MAAM,MAAM,GAAG,OAAO,CAAC,CAAC,CAAC,IAAI,EAAE,CAAC;IAChC,MAAM,GAAG,GAAG,MAAM,CAAC,GAAG,CAAC;IAEvB,OAAO,GAAG,CAAC,MAAM,CAAC;AACpB,CAAC,CAAC"}
