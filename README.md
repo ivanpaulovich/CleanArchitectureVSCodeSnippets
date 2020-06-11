@@ -27,6 +27,7 @@ You can install [Clean Architecture C# Snippets](https://marketplace.visualstudi
   * [DB Context](#db-context)
 * [User Interface](#user-interface)
   * [Presenter](#presenter)
+* [Roadmap](#roadmap)
 
 ## Domain
 
@@ -208,3 +209,11 @@ public sealed class DepositResponse
 
 }
 ```
+
+## Roadmap
+
+* [ ] Code snippets.
+* [ ] Context menu.
+* [ ] Code analyzers.
+* [ ] Infrastructure.
+
