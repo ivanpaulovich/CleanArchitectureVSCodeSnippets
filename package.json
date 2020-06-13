@@ -35,11 +35,15 @@
   "main": "./out/extension",
   "activationEvents": [
     "onLanguage:csharp",
+    "onCommand:extension.newAggregateRoot",
     "onCommand:extension.newEntity",
-    "onCommand:extension.newEntityInterface",
     "onCommand:extension.newFactory",
     "onCommand:extension.newService",
-    "onCommand:extension.newValueObject"
+    "onCommand:extension.newValueObject",
+    "onCommand:extension.newBoundary",
+    "onCommand:extension.newApplicationService",
+    "onCommand:extension.newUnitOfWork",
+    "onCommand:extension.newUseCase"
   ],
   "contributes": {
     "snippets": [
@@ -50,12 +54,12 @@
     ],
     "commands": [
       {
-        "command": "extension.newEntity",
-        "title": "New Entity"
+        "command": "extension.newAggregateRoot",
+        "title": "New Aggregate Root"
       },
       {
-        "command": "extension.newEntityInterface",
-        "title": "New Entity Interface"
+        "command": "extension.newEntity",
+        "title": "New Entity"
       },
       {
         "command": "extension.newFactory",
@@ -68,18 +72,34 @@
       {
         "command": "extension.newValueObject",
         "title": "New Value Object"
+      },
+      {
+        "command": "extension.newBoundary",
+        "title": "New Boundary"
+      },
+      {
+        "command": "extension.newApplicationService",
+        "title": "New Application Service"
+      },
+      {
+        "command": "extension.newUnitOfWork",
+        "title": "New Unit Of Work"
+      },
+      {
+        "command": "extension.newUseCase",
+        "title": "New Use Case"
       }
     ],
     "menus": {
       "explorer/context": [
         {
           "when": "resourceFilename =~ /(.*Domain)/",
-          "command": "extension.newEntity",
+          "command": "extension.newAggregateRoot",
           "group": "Domain@1"
         },
         {
           "when": "resourceFilename =~ /(.*Domain)/",
-          "command": "extension.newEntityInterface",
+          "command": "extension.newEntity",
           "group": "Domain@1"
         },
         {
@@ -96,6 +116,26 @@
           "when": "resourceFilename =~ /(.*Domain)/",
           "command": "extension.newValueObject",
           "group": "Domain@1"
+        },
+        {
+          "when": "resourceFilename =~ /(.*Application)/",
+          "command": "extension.newBoundary",
+          "group": "Application@1"
+        },
+        {
+          "when": "resourceFilename =~ /(.*Application)/",
+          "command": "extension.newApplicationService",
+          "group": "Application@1"
+        },
+        {
+          "when": "resourceFilename =~ /(.*Application)/",
+          "command": "extension.newUnitOfWork",
+          "group": "Application@1"
+        },
+        {
+          "when": "resourceFilename =~ /(.*Application)/",
+          "command": "extension.newUseCase",
+          "group": "Application@1"
         }
       ]
     }
