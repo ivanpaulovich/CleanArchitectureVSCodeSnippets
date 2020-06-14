@@ -10,5 +10,5 @@ tsconfig.json
 vsc-extension-quickstart.md
 tslint.json
 jest.config.js
-
+node_modules/
 coverage/**
