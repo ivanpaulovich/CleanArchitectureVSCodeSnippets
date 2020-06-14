@@ -4,7 +4,7 @@
   "displayName": "Clean Architecture C# Snippets",
   "description": "Clean Architecture C# Snippets for Visual Studio Code",
   "icon": "img/clean-architecture-extension.png",
-  "version": "0.0.2",
+  "version": "0.0.6",
   "author": "Ivan Paulovich",
   "license": "SEE LICENSE IN LICENSE.md",
   "repository": {

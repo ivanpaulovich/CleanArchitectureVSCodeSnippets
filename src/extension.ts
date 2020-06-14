@@ -9,15 +9,15 @@ const findupglob = require('find-up-glob');
 
 export function activate(context: ExtensionContext) {
   // domain
-  context.subscriptions.push(vscode.commands.registerCommand('extension.newAggregateRoot', newAggregateRoot));
-  context.subscriptions.push(vscode.commands.registerCommand('extension.newEntity', newEntity));
-  context.subscriptions.push(vscode.commands.registerCommand('extension.newFactory', newFactory));
-  context.subscriptions.push(vscode.commands.registerCommand('extension.newService', newService));
-  context.subscriptions.push(vscode.commands.registerCommand('extension.newValueObject', newValueObject));
+  context.subscriptions.push(vscode.commands.registerCommand('extension.newAggregateRoot', async(e) => await newAggregateRoot(e)));
+  context.subscriptions.push(vscode.commands.registerCommand('extension.newEntity', async(e) => newEntity(e)));
+  context.subscriptions.push(vscode.commands.registerCommand('extension.newFactory', async(e)  => newFactory(e)));
+  context.subscriptions.push(vscode.commands.registerCommand('extension.newService', async(e)  => newService(e)));
+  context.subscriptions.push(vscode.commands.registerCommand('extension.newValueObject', async(e)  => newValueObject(e)));
 
   // application
-  context.subscriptions.push(vscode.commands.registerCommand('extension.newUseCase', newUseCase));
-  context.subscriptions.push(vscode.commands.registerCommand('extension.addBoundaries', addBoundaries));
+  context.subscriptions.push(vscode.commands.registerCommand('extension.newUseCase', async(e) => await newUseCase(e)));
+  context.subscriptions.push(vscode.commands.registerCommand('extension.addBoundaries', async(e) => await addBoundaries(e)));
 }
 
 async function newAggregateRoot(args: { _fsPath: any; } | null) {
@@ -33,7 +33,7 @@ async function newAggregateRoot(args: { _fsPath: any; } | null) {
 
   if (input == '')
   {
-    vscode.window.showErrorMessage("`Aggregate root name` can't be empty.");
+    await vscode.window.showErrorMessage("`Aggregate root name` can't be empty.");
   }
 
   if (args == null) {
@@ -45,7 +45,6 @@ async function newAggregateRoot(args: { _fsPath: any; } | null) {
   var destinationEntityFileName = incomingPath + path.sep + input + '.cs';
   var destinationEntityInterfaceFileName = incomingPath + path.sep + 'I' + input + '.cs';
   var destinationRepositoryInterfaceFileName = incomingPath + path.sep + 'I' + input + 'Repository.cs';
-
 
   if (fileExists(destinationEntityFileName) || 
     fileExists(destinationEntityInterfaceFileName) ||
@@ -74,7 +73,7 @@ async function newEntity(args: { _fsPath: any; } | null) {
 
   if (input == '')
   {
-    vscode.window.showErrorMessage("`Entity name` can't be empty.");
+    await vscode.window.showErrorMessage("`Entity name` can't be empty.");
   }
 
   if (args == null) {
@@ -86,7 +85,8 @@ async function newEntity(args: { _fsPath: any; } | null) {
   var destinationEntityFileName = incomingPath + path.sep + input + '.cs';
   var destinationEntityInterfaceFileName = incomingPath + path.sep + 'I' + input + '.cs';
 
-  if (fileExists(destinationEntityFileName) || fileExists(destinationEntityInterfaceFileName))
+  if (fileExists(destinationEntityFileName) ||
+    fileExists(destinationEntityInterfaceFileName))
   {
     return;
   }
@@ -110,7 +110,7 @@ async function newFactory(args: any) {
 
   if (input == '')
   {
-    vscode.window.showErrorMessage("`Factory name` can't be empty.");
+    await vscode.window.showErrorMessage("`Factory name` can't be empty.");
   }
 
   if (args == null) {
@@ -144,7 +144,7 @@ async function newService(args: any) {
 
   if (input == '')
   {
-    vscode.window.showErrorMessage("`Service name` can't be empty.");
+    await vscode.window.showErrorMessage("`Service name` can't be empty.");
   }
 
   if (args == null) {
@@ -178,7 +178,7 @@ async function newValueObject(args: any) {
 
   if (input == '')
   {
-    vscode.window.showErrorMessage("`Value Object name` can't be empty.");
+    await vscode.window.showErrorMessage("`Value Object name` can't be empty.");
   }
 
   if (args == null) {
@@ -246,7 +246,7 @@ async function newUseCase(args: any) {
 
   if (input == '')
   {
-    vscode.window.showErrorMessage("`Use Case name` can't be empty.");
+    await vscode.window.showErrorMessage("`Use Case name` can't be empty.");
   }
 
   if (args == null) {
@@ -260,10 +260,10 @@ async function newUseCase(args: any) {
   let destinationOutputPortFile = incomingPath + path.sep + 'Boundaries' + path.sep + input + path.sep + 'I' + input + 'OutputPort.cs';
   let destinationUseCaseInterfaceFile = incomingPath + path.sep + 'Boundaries' + path.sep + input + path.sep + 'I' + input + 'UseCase.cs';
   let destinationInputFile = incomingPath + path.sep + 'Boundaries' + path.sep + input + path.sep + input + 'Input.cs';
-  let destinationOutputFile = incomingPath + path.sep + 'Boundaries' + path.sep + input + path.sep + 'Output.cs';
+  let destinationOutputFile = incomingPath + path.sep + 'Boundaries' + path.sep + input + path.sep + input + 'Output.cs';
 
   let destinationUseCasePath = incomingPath + path.sep + 'UseCases';
-  let destinationUseCaseFile = incomingPath + path.sep + 'UseCases' + path.sep + 'UseCase.cs';
+  let destinationUseCaseFile = incomingPath + path.sep + 'UseCases' + path.sep + input + 'UseCase.cs';
 
   if (!fileExists(destinationBoundariesRootPath))
   {
@@ -301,7 +301,6 @@ async function newUseCase(args: any) {
 function fileExists(destinationFileName: string) : boolean
 {
   if (fs.existsSync(destinationFileName)) {
-    vscode.window.showErrorMessage(`${ destinationFileName } already exists.`);
     return true;
   }
 
@@ -356,7 +355,7 @@ function getProjectRootDirOfFilePath(filepath: string) {
 }
 
 function openTemplateAndSaveNewFile(templateFileName: string, destinationFileName: string, namespace: string, input: string) {
-  vscode.workspace.openTextDocument(`${vscode.extensions.getExtension('ivanpaulovich.clean-architecture-csharp-snippets').extensionPath}${path.sep}src${path.sep}templates${path.sep}${templateFileName}`)
+  vscode.workspace.openTextDocument(`${vscode.extensions.getExtension('ivanpaulovich.clean-architecture-csharp-snippets').extensionPath}${path.sep}templates${path.sep}${templateFileName}`)
     .then((doc: vscode.TextDocument) => {
       let text = doc.getText();
 

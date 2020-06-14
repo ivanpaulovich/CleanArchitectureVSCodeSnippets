@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.5] - 2020-06-14
+
+- [#1](https://github.com/ivanpaulovich/CleanArchitectureVSCodeSnippets/issues/1) Fix the `find-parent-dir` error.
+
 ## [0.0.1] - 2020-06-10
 
 ### Added

@@ -18,14 +18,14 @@ const parentfinder = require('find-parent-dir');
 const findupglob = require('find-up-glob');
 function activate(context) {
     // domain
-    context.subscriptions.push(vscode.commands.registerCommand('extension.newAggregateRoot', newAggregateRoot));
-    context.subscriptions.push(vscode.commands.registerCommand('extension.newEntity', newEntity));
-    context.subscriptions.push(vscode.commands.registerCommand('extension.newFactory', newFactory));
-    context.subscriptions.push(vscode.commands.registerCommand('extension.newService', newService));
-    context.subscriptions.push(vscode.commands.registerCommand('extension.newValueObject', newValueObject));
+    context.subscriptions.push(vscode.commands.registerCommand('extension.newAggregateRoot', (e) => __awaiter(this, void 0, void 0, function* () { return yield newAggregateRoot(e); })));
+    context.subscriptions.push(vscode.commands.registerCommand('extension.newEntity', (e) => __awaiter(this, void 0, void 0, function* () { return newEntity(e); })));
+    context.subscriptions.push(vscode.commands.registerCommand('extension.newFactory', (e) => __awaiter(this, void 0, void 0, function* () { return newFactory(e); })));
+    context.subscriptions.push(vscode.commands.registerCommand('extension.newService', (e) => __awaiter(this, void 0, void 0, function* () { return newService(e); })));
+    context.subscriptions.push(vscode.commands.registerCommand('extension.newValueObject', (e) => __awaiter(this, void 0, void 0, function* () { return newValueObject(e); })));
     // application
-    context.subscriptions.push(vscode.commands.registerCommand('extension.newUseCase', newUseCase));
-    context.subscriptions.push(vscode.commands.registerCommand('extension.addBoundaries', addBoundaries));
+    context.subscriptions.push(vscode.commands.registerCommand('extension.newUseCase', (e) => __awaiter(this, void 0, void 0, function* () { return yield newUseCase(e); })));
+    context.subscriptions.push(vscode.commands.registerCommand('extension.addBoundaries', (e) => __awaiter(this, void 0, void 0, function* () { return yield addBoundaries(e); })));
 }
 exports.activate = activate;
 function newAggregateRoot(args) {
@@ -38,7 +38,7 @@ function newAggregateRoot(args) {
             validateInput: (text) => text == '' ? 'input is required.' : ''
         });
         if (input == '') {
-            vscode.window.showErrorMessage("`Aggregate root name` can't be empty.");
+            yield vscode.window.showErrorMessage("`Aggregate root name` can't be empty.");
         }
         if (args == null) {
             args = { _fsPath: vscode.workspace.rootPath };
@@ -68,7 +68,7 @@ function newEntity(args) {
             validateInput: (text) => text == '' ? 'input is required.' : ''
         });
         if (input == '') {
-            vscode.window.showErrorMessage("`Entity name` can't be empty.");
+            yield vscode.window.showErrorMessage("`Entity name` can't be empty.");
         }
         if (args == null) {
             args = { _fsPath: vscode.workspace.rootPath };
@@ -76,7 +76,8 @@ function newEntity(args) {
         let incomingPath = args._fsPath;
         var destinationEntityFileName = incomingPath + path.sep + input + '.cs';
         var destinationEntityInterfaceFileName = incomingPath + path.sep + 'I' + input + '.cs';
-        if (fileExists(destinationEntityFileName) || fileExists(destinationEntityInterfaceFileName)) {
+        if (fileExists(destinationEntityFileName) ||
+            fileExists(destinationEntityInterfaceFileName)) {
             return;
         }
         let namespace = getNamespace(destinationEntityFileName);
@@ -94,7 +95,7 @@ function newFactory(args) {
             validateInput: (text) => text == '' ? 'input is required.' : ''
         });
         if (input == '') {
-            vscode.window.showErrorMessage("`Factory name` can't be empty.");
+            yield vscode.window.showErrorMessage("`Factory name` can't be empty.");
         }
         if (args == null) {
             args = { _fsPath: vscode.workspace.rootPath };
@@ -118,7 +119,7 @@ function newService(args) {
             validateInput: (text) => text == '' ? 'input is required.' : ''
         });
         if (input == '') {
-            vscode.window.showErrorMessage("`Service name` can't be empty.");
+            yield vscode.window.showErrorMessage("`Service name` can't be empty.");
         }
         if (args == null) {
             args = { _fsPath: vscode.workspace.rootPath };
@@ -142,7 +143,7 @@ function newValueObject(args) {
             validateInput: (text) => text == '' ? 'input is required.' : ''
         });
         if (input == '') {
-            vscode.window.showErrorMessage("`Value Object name` can't be empty.");
+            yield vscode.window.showErrorMessage("`Value Object name` can't be empty.");
         }
         if (args == null) {
             args = { _fsPath: vscode.workspace.rootPath };
@@ -193,7 +194,7 @@ function newUseCase(args) {
             validateInput: (text) => text == '' ? 'input is required.' : ''
         });
         if (input == '') {
-            vscode.window.showErrorMessage("`Use Case name` can't be empty.");
+            yield vscode.window.showErrorMessage("`Use Case name` can't be empty.");
         }
         if (args == null) {
             args = { _fsPath: vscode.workspace.rootPath };
@@ -204,9 +205,9 @@ function newUseCase(args) {
         let destinationOutputPortFile = incomingPath + path.sep + 'Boundaries' + path.sep + input + path.sep + 'I' + input + 'OutputPort.cs';
         let destinationUseCaseInterfaceFile = incomingPath + path.sep + 'Boundaries' + path.sep + input + path.sep + 'I' + input + 'UseCase.cs';
         let destinationInputFile = incomingPath + path.sep + 'Boundaries' + path.sep + input + path.sep + input + 'Input.cs';
-        let destinationOutputFile = incomingPath + path.sep + 'Boundaries' + path.sep + input + path.sep + 'Output.cs';
+        let destinationOutputFile = incomingPath + path.sep + 'Boundaries' + path.sep + input + path.sep + input + 'Output.cs';
         let destinationUseCasePath = incomingPath + path.sep + 'UseCases';
-        let destinationUseCaseFile = incomingPath + path.sep + 'UseCases' + path.sep + 'UseCase.cs';
+        let destinationUseCaseFile = incomingPath + path.sep + 'UseCases' + path.sep + input + 'UseCase.cs';
         if (!fileExists(destinationBoundariesRootPath)) {
             fs.mkdirSync(destinationBoundariesRootPath);
         }
@@ -233,7 +234,6 @@ function newUseCase(args) {
 }
 function fileExists(destinationFileName) {
     if (fs.existsSync(destinationFileName)) {
-        vscode.window.showErrorMessage(`${destinationFileName} already exists.`);
         return true;
     }
     return false;
@@ -274,7 +274,7 @@ function getProjectRootDirOfFilePath(filepath) {
     return projectrootdir;
 }
 function openTemplateAndSaveNewFile(templateFileName, destinationFileName, namespace, input) {
-    vscode.workspace.openTextDocument(`${vscode.extensions.getExtension('ivanpaulovich.clean-architecture-csharp-snippets').extensionPath}${path.sep}src${path.sep}templates${path.sep}${templateFileName}`)
+    vscode.workspace.openTextDocument(`${vscode.extensions.getExtension('ivanpaulovich.clean-architecture-csharp-snippets').extensionPath}${path.sep}templates${path.sep}${templateFileName}`)
         .then((doc) => {
         let text = doc.getText();
         text = text.split('${namespace}').join(namespace);
