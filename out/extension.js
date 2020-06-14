@@ -26,8 +26,6 @@ function activate(context) {
     // application
     context.subscriptions.push(vscode.commands.registerCommand('extension.newUseCase', newUseCase));
     context.subscriptions.push(vscode.commands.registerCommand('extension.addBoundaries', addBoundaries));
-    context.subscriptions.push(vscode.commands.registerCommand('extension.newApplicationService', newApplicationService));
-    context.subscriptions.push(vscode.commands.registerCommand('extension.newUnitOfWork', newUnitOfWork));
 }
 exports.activate = activate;
 function newAggregateRoot(args) {
@@ -232,10 +230,6 @@ function newUseCase(args) {
         openTemplateAndSaveNewFile(`application${path.sep}use-case${path.sep}Boundaries${path.sep}UseCaseName${path.sep}UseCaseNameInput.tmpl`, destinationInputFile, namespace, input);
         openTemplateAndSaveNewFile(`application${path.sep}use-case${path.sep}Boundaries${path.sep}UseCaseName${path.sep}UseCaseNameOutput.tmpl`, destinationOutputFile, namespace, input);
     });
-}
-function newApplicationService(args) {
-}
-function newUnitOfWork(args) {
 }
 function fileExists(destinationFileName) {
     if (fs.existsSync(destinationFileName)) {

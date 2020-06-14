@@ -1,220 +1,95 @@
-# Clean Architecture C# Snippets for Visual Studio Code
+# Clean Architecture C# Extension for Visual Studio Code
 
-C# Snippets to guide you into implementing a software following the Clean Architecture principles. It helps with the project structure, design patterns, dependencies and to use frameworks on the correct way.
+C# extension to guide you into implementing a software following the Clean Architecture principles. It helps with the project structure, design patterns, dependencies and using frameworks correctly.
 
 ## Install
 
 You can install [Clean Architecture C# Snippets](https://marketplace.visualstudio.com/items?itemName=ivanpaulovich.clean-architecture-csharp-snippets) from the Visual Studio Code Marketplace.
 
-## Index of Code Snippets
+## Index of Features
   
 * [Domain](#domain)
-  * [Aggregate Root](#aggregate-root)
-  * [Entity](#entity)
-  * [Value Object](#value-object)
-  * [Domain Service](#domain-service)
-  * [Factory](#factory)
+  * [New Aggregate Root](#new-aggregate-root)
+  * [New Entity](#new-entity)
+  * [New Value Object](#new-value-object)
+  * [New Domain Service](#new-domain-service)
+  * [New Factory](#new-factory)
 * [Application](#application)
-  * [Use Case Boundary](#use-case-boundary)
-  * [Use Case Implementation](#use-case-implementation)
-  * [Unit of Work](#unit-of-work)
-* [Infrastructure](#infrastructure)
-  * [Entity Implementation](#entity-implementation)
-  * [Repository Implementation](#repository-implementation)
-  * [Unit of Work Implementation](#unit-of-work-implementation)
-  * [Factory Implementation](#factory-implementation)
-  * [Unit Of Work Implementation](#entity-context)
-  * [DB Context](#db-context)
-* [User Interface](#user-interface)
-  * [Presenter](#presenter)
+  * [Add Boundaries](#add-boundaries)
+  * [New Use Case](#new-use-case)
 * [Roadmap](#roadmap)
 
 ## Domain
 
-### Aggregate Root
+Create a folder name `Domain` then right click on it for the following options.
 
-```cs
-public interface ICustomer
-{
+![Domain Context Menu](img/domain-context-menu.png)
 
-}
+### New Aggregate Root
 
-public abstract class Customer : ICustomer
-{
+Type the Aggregate Root name and press `enter`. The following files will be created:
 
-}
+* Aggregate Root abstract class.
+* Aggregate Root interface.
+* Aggregate Root Repository interface.
 
-public interface ICustomerRepository
-{
+### New Entity
 
-}
-```
+Type the Entity name and press `enter`. The following files will be created:
 
-### Entity
+* Aggregate Root abstract class.
+* Aggregate Root interface.
 
-```cs
-public interface ICustomer
-{
+### New Value Object
 
-}
+Type the Value Object name and press `enter`. The following file will be created:
 
-public abstract class Customer : ICustomer
-{
+* Value Object struct.
 
-}
-```
+### New Service
 
-### Value Object
+Type the Domain Service name and press `enter`. The following file will be created:
 
-```cs
-public readonly struct Name
-{
-    private readonly string _text;
+* Sealed domain service class.
 
-    public Name(string text)
-    {
-        if (string.IsNullOrWhiteSpace(text))
-            throw new NameShouldNotBeEmptyException("The 'Name' field is required");
+### New Factory
 
-        _text = text;
-    }
+Type the Factory name and press `enter`. The following file will be created:
 
-    public override string ToString()
-    {
-        return _text;
-    }
-}
-```
-
-### Domain Service
-
-```cs
-public sealed class AccountService
-{
-    private readonly IAccountFactory _accountFactory;
-    private readonly IAccountRepository _accountRepository;
-
-    public AccountService(
-        IAccountFactory accountFactory,
-        IAccountRepository accountRepository)
-    {
-        this._accountFactory = accountFactory;
-        this._accountRepository = accountRepository;
-    }
-}
-```
-
-### Factory
-
-```cs
-public interface IAccountFactory
-{
-}
-```
+* Factory interface.
 
 ## Application
 
-### Use Case Boundary
+Create a folder name `Application` then right click on it for the following options.
 
-```cs
-public interface IDepositUseCase : IUseCase<DepositInput>
-{
+![Application Context Menu](img/domain-context-menu.png)
 
-}
+### Add Boundaries
 
-public interface IDepositOutputPort : IOutputPortStandard<DepositOutput>, IOutputPortNotFound, IOutputPortError
-{
+The following files will be created:
 
-}
+* Use Case Interface.
+* Use Case Standard Output Port interface.
+* Use Case Error Output Port interface.
+* Use Case Not Found Output Port interface.
 
-public sealed class DepositInput
-{
+### New Use Case
 
-}
+The following files will be created:
 
-public sealed class DepositOutput
-{
-
-}
-```
-
-### Use Case Implementation
-
-```cs
-public sealed class DepositUseCase : IDepositUseCase
-{
-    private readonly IDepositOutputPort _depositOutputPort;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public DepositUseCase(
-        IDepositOutputPort depositOutputPort,
-        IUnitOfWork unitOfWork)
-    {
-        this._depositOutputPort = depositOutputPort;
-        this._unitOfWork = unitOfWork;
-    }
-
-    public async Task Execute(DepositInput input)
-    {
-        throw new NotImplementedException();
-    }
-}
-```
-
-## Infrastructure
-
-### Entity Implementation
-
-```cs
-public sealed class CustomerImpl : Customer
-{
-
-}
-```
-
-### Repository Implementation
-
-```cs
-public sealed class CustomerRepository : ICustomerRepository
-{
-
-}
-```
-
-## User Interface
-
-### Presenter
-
-```cs
-public sealed class DepositPresenter : IDepositOutputPort
-{
-    public IActionResult ViewModel { get; private set; } = new NoContentResult();
-
-    public void NotFound(string message) => this.ViewModel = new NotFoundObjectResult(message);
-
-    public void Standard(DepositOutput depositOutput)
-    {
-
-    }
-
-    public void WriteError(string message) => this.ViewModel = new BadRequestObjectResult(message);
-}
-```
-
-### Response
-
-```cs
-public sealed class DepositResponse
-{
-
-}
-```
+* Use Case implementation.
+* Use Case boundary.
 
 ## Roadmap
 
-* [ ] Code snippets.
-* [ ] Context menu.
+* [x] Add initial context menu options.
+* [ ] Link templates to Clean Architecture Manga wiki.
+* [ ] Add fine grained code snippets.
+* [ ] Add more context menu options.
 * [ ] Code analyzers.
-* [ ] Infrastructure.
+* [ ] Add common dependencies.
+* [ ] Generate solution structure.
+* [ ] Add tools for infrastructure.
+* [ ] Add tools for user interface.
 
 > Features are released quickly. Check out the [Changelog](https://github.com/ivanpaulovich/CleanArchitectureVSCodeSnippets/blob/master/CHANGELOG.md) and give a :star:!
