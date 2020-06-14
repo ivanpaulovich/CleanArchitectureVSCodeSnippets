@@ -40,9 +40,7 @@
     "onCommand:extension.newFactory",
     "onCommand:extension.newService",
     "onCommand:extension.newValueObject",
-    "onCommand:extension.newBoundary",
-    "onCommand:extension.newApplicationService",
-    "onCommand:extension.newUnitOfWork",
+    "onCommand:extension.addBoundaries",
     "onCommand:extension.newUseCase"
   ],
   "contributes": {
@@ -74,16 +72,8 @@
         "title": "New Value Object"
       },
       {
-        "command": "extension.newBoundary",
-        "title": "New Boundary"
-      },
-      {
-        "command": "extension.newApplicationService",
-        "title": "New Application Service"
-      },
-      {
-        "command": "extension.newUnitOfWork",
-        "title": "New Unit Of Work"
+        "command": "extension.addBoundaries",
+        "title": "Add Boundaries"
       },
       {
         "command": "extension.newUseCase",
@@ -119,17 +109,7 @@
         },
         {
           "when": "resourceFilename =~ /(.*Application)/",
-          "command": "extension.newBoundary",
-          "group": "Application@1"
-        },
-        {
-          "when": "resourceFilename =~ /(.*Application)/",
-          "command": "extension.newApplicationService",
-          "group": "Application@1"
-        },
-        {
-          "when": "resourceFilename =~ /(.*Application)/",
-          "command": "extension.newUnitOfWork",
+          "command": "extension.addBoundaries",
           "group": "Application@1"
         },
         {

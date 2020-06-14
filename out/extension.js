@@ -24,10 +24,10 @@ function activate(context) {
     context.subscriptions.push(vscode.commands.registerCommand('extension.newService', newService));
     context.subscriptions.push(vscode.commands.registerCommand('extension.newValueObject', newValueObject));
     // application
-    context.subscriptions.push(vscode.commands.registerCommand('extension.newBoundary', newBoundary));
+    context.subscriptions.push(vscode.commands.registerCommand('extension.newUseCase', newUseCase));
+    context.subscriptions.push(vscode.commands.registerCommand('extension.addBoundaries', addBoundaries));
     context.subscriptions.push(vscode.commands.registerCommand('extension.newApplicationService', newApplicationService));
     context.subscriptions.push(vscode.commands.registerCommand('extension.newUnitOfWork', newUnitOfWork));
-    context.subscriptions.push(vscode.commands.registerCommand('extension.newUseCase', newUseCase));
 }
 exports.activate = activate;
 function newAggregateRoot(args) {
@@ -49,9 +49,9 @@ function newAggregateRoot(args) {
         var destinationEntityFileName = incomingPath + path.sep + input + '.cs';
         var destinationEntityInterfaceFileName = incomingPath + path.sep + 'I' + input + '.cs';
         var destinationRepositoryInterfaceFileName = incomingPath + path.sep + 'I' + input + 'Repository.cs';
-        if ((yield checkFileExists(destinationEntityFileName)) ||
-            (yield checkFileExists(destinationEntityInterfaceFileName)) ||
-            (yield checkFileExists(destinationRepositoryInterfaceFileName))) {
+        if (fileExists(destinationEntityFileName) ||
+            fileExists(destinationEntityInterfaceFileName) ||
+            fileExists(destinationRepositoryInterfaceFileName)) {
             return;
         }
         let namespace = getNamespace(destinationEntityFileName);
@@ -78,7 +78,7 @@ function newEntity(args) {
         let incomingPath = args._fsPath;
         var destinationEntityFileName = incomingPath + path.sep + input + '.cs';
         var destinationEntityInterfaceFileName = incomingPath + path.sep + 'I' + input + '.cs';
-        if ((yield checkFileExists(destinationEntityFileName)) || (yield checkFileExists(destinationEntityInterfaceFileName))) {
+        if (fileExists(destinationEntityFileName) || fileExists(destinationEntityInterfaceFileName)) {
             return;
         }
         let namespace = getNamespace(destinationEntityFileName);
@@ -103,7 +103,7 @@ function newFactory(args) {
         }
         let incomingPath = args._fsPath;
         var destinationFactoryFileName = incomingPath + path.sep + input + '.cs';
-        if (yield checkFileExists(destinationFactoryFileName)) {
+        if (fileExists(destinationFactoryFileName)) {
             return;
         }
         let namespace = getNamespace(destinationFactoryFileName);
@@ -127,7 +127,7 @@ function newService(args) {
         }
         let incomingPath = args._fsPath;
         var destinationServiceFileName = incomingPath + path.sep + input + '.cs';
-        if (yield checkFileExists(destinationServiceFileName)) {
+        if (fileExists(destinationServiceFileName)) {
             return;
         }
         let namespace = getNamespace(destinationServiceFileName);
@@ -151,21 +151,98 @@ function newValueObject(args) {
         }
         let incomingPath = args._fsPath;
         var destinationValueObjectFileName = incomingPath + path.sep + input + '.cs';
-        if (yield checkFileExists(destinationValueObjectFileName)) {
+        if (fileExists(destinationValueObjectFileName)) {
             return;
         }
         let namespace = getNamespace(destinationValueObjectFileName);
         openTemplateAndSaveNewFile(`domain${path.sep}value-object.tmpl`, destinationValueObjectFileName, namespace, input);
     });
 }
-function checkFileExists(destinationFileName) {
+function addBoundaries(args) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (fs.existsSync(destinationFileName)) {
-            yield vscode.window.showErrorMessage(`${destinationFileName} already exists.`);
-            return true;
+        if (args == null) {
+            args = { _fsPath: vscode.workspace.rootPath };
         }
-        return false;
+        let incomingPath = args._fsPath;
+        let destinationBoundariesPath = incomingPath + path.sep + 'Boundaries';
+        let destinationOutputPortErrorPath = incomingPath + path.sep + 'Boundaries' + path.sep + 'IOutputPortError.cs';
+        let destinationOutputPortNotFoundPath = incomingPath + path.sep + 'Boundaries' + path.sep + 'IOutputPortNotFound.cs';
+        let destinationOutputPortStandardPath = incomingPath + path.sep + 'Boundaries' + path.sep + 'IOutputPortStandard.cs';
+        let destinationUseCasePath = incomingPath + path.sep + 'Boundaries' + path.sep + 'IUseCase.cs';
+        if (!fileExists(destinationBoundariesPath)) {
+            fs.mkdirSync(destinationBoundariesPath);
+        }
+        if (fileExists(destinationOutputPortErrorPath) ||
+            fileExists(destinationOutputPortNotFoundPath) ||
+            fileExists(destinationOutputPortStandardPath) ||
+            fileExists(destinationUseCasePath)) {
+            return;
+        }
+        let namespace = getNamespace(destinationUseCasePath);
+        openTemplateAndSaveNewFile(`application${path.sep}boundaries${path.sep}IOutputPortError.tmpl`, destinationOutputPortErrorPath, namespace, '');
+        openTemplateAndSaveNewFile(`application${path.sep}boundaries${path.sep}IOutputPortNotFound.tmpl`, destinationOutputPortNotFoundPath, namespace, '');
+        openTemplateAndSaveNewFile(`application${path.sep}boundaries${path.sep}IOutputPortStandard.tmpl`, destinationOutputPortStandardPath, namespace, '');
+        openTemplateAndSaveNewFile(`application${path.sep}boundaries${path.sep}IUseCase.tmpl`, destinationUseCasePath, namespace, '');
     });
+}
+function newUseCase(args) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const input = yield vscode.window.showInputBox({
+            ignoreFocusOut: true,
+            prompt: 'Please enter the `Use Case name`.',
+            placeHolder: 'UseCase',
+            value: 'UseCase',
+            validateInput: (text) => text == '' ? 'input is required.' : ''
+        });
+        if (input == '') {
+            vscode.window.showErrorMessage("`Use Case name` can't be empty.");
+        }
+        if (args == null) {
+            args = { _fsPath: vscode.workspace.rootPath };
+        }
+        let incomingPath = args._fsPath;
+        let destinationBoundariesRootPath = incomingPath + path.sep + 'Boundaries';
+        let destinationBoundariesPath = incomingPath + path.sep + 'Boundaries' + path.sep + input;
+        let destinationOutputPortFile = incomingPath + path.sep + 'Boundaries' + path.sep + input + path.sep + 'I' + input + 'OutputPort.cs';
+        let destinationUseCaseInterfaceFile = incomingPath + path.sep + 'Boundaries' + path.sep + input + path.sep + 'I' + input + 'UseCase.cs';
+        let destinationInputFile = incomingPath + path.sep + 'Boundaries' + path.sep + input + path.sep + input + 'Input.cs';
+        let destinationOutputFile = incomingPath + path.sep + 'Boundaries' + path.sep + input + path.sep + 'Output.cs';
+        let destinationUseCasePath = incomingPath + path.sep + 'UseCases';
+        let destinationUseCaseFile = incomingPath + path.sep + 'UseCases' + path.sep + 'UseCase.cs';
+        if (!fileExists(destinationBoundariesRootPath)) {
+            fs.mkdirSync(destinationBoundariesRootPath);
+        }
+        if (!fileExists(destinationBoundariesPath)) {
+            fs.mkdirSync(destinationBoundariesPath);
+        }
+        if (!fileExists(destinationUseCasePath)) {
+            fs.mkdirSync(destinationUseCasePath);
+        }
+        if (fileExists(destinationOutputPortFile) ||
+            fileExists(destinationUseCaseInterfaceFile) ||
+            fileExists(destinationInputFile) ||
+            fileExists(destinationOutputFile) ||
+            fileExists(destinationUseCaseFile)) {
+            return;
+        }
+        let namespace = getNamespace(destinationUseCasePath);
+        openTemplateAndSaveNewFile(`application${path.sep}use-case${path.sep}UseCases${path.sep}UseCaseName.tmpl`, destinationUseCaseFile, namespace, input);
+        openTemplateAndSaveNewFile(`application${path.sep}use-case${path.sep}Boundaries${path.sep}UseCaseName${path.sep}IUseCaseNameOutputPort.tmpl`, destinationOutputPortFile, namespace, input);
+        openTemplateAndSaveNewFile(`application${path.sep}use-case${path.sep}Boundaries${path.sep}UseCaseName${path.sep}IUseCaseNameUseCase.tmpl`, destinationUseCaseInterfaceFile, namespace, input);
+        openTemplateAndSaveNewFile(`application${path.sep}use-case${path.sep}Boundaries${path.sep}UseCaseName${path.sep}UseCaseNameInput.tmpl`, destinationInputFile, namespace, input);
+        openTemplateAndSaveNewFile(`application${path.sep}use-case${path.sep}Boundaries${path.sep}UseCaseName${path.sep}UseCaseNameOutput.tmpl`, destinationOutputFile, namespace, input);
+    });
+}
+function newApplicationService(args) {
+}
+function newUnitOfWork(args) {
+}
+function fileExists(destinationFileName) {
+    if (fs.existsSync(destinationFileName)) {
+        vscode.window.showErrorMessage(`${destinationFileName} already exists.`);
+        return true;
+    }
+    return false;
 }
 function getNamespace(destinationFileName) {
     var projectRootDir = getProjectRootDirOfFilePath(destinationFileName);
@@ -184,65 +261,6 @@ function getNamespace(destinationFileName) {
     namespace = namespace.replace(/\s+/g, "_");
     namespace = namespace.replace(/-/g, "_");
     return namespace;
-}
-function newBoundary(args) {
-    //promptAndSave(args, 'service', 'application/boundary/input.tmpl', 'application/boundary/output.tmpl', 'application/boundary/usecase-interface.tmpl', 'application/boundary/usecase-output-port.tmpl', );
-}
-function newApplicationService(args) {
-    promptAndSave(args, 'service', 'application/service.tmpl');
-}
-function newUnitOfWork(args) {
-    promptAndSave(args, 'service', 'application/unit-of-work.tmpl');
-}
-function newUseCase(args) {
-    promptAndSave(args, 'service', 'application/usecase.tmpl');
-}
-function promptAndSave(args, type, templatetype) {
-    if (args == null) {
-        args = { _fsPath: vscode.workspace.rootPath };
-    }
-    let incomingpath = args._fsPath;
-    vscode.window.showInputBox({ ignoreFocusOut: true, prompt: 'Please enter filename', value: 'new' + type + '.cs' })
-        .then((newfilename) => {
-        if (typeof newfilename === 'undefined') {
-            return;
-        }
-        var newfilepath = incomingpath + path.sep + newfilename;
-        if (fs.existsSync(newfilepath)) {
-            vscode.window.showErrorMessage("File already exists");
-            return;
-        }
-        newfilepath = correctExtension(newfilepath);
-        var originalfilepath = newfilepath;
-        var projectrootdir = getProjectRootDirOfFilePath(newfilepath);
-        if (projectrootdir == null) {
-            vscode.window.showErrorMessage("Unable to find project.json or *.csproj");
-            return;
-        }
-        projectrootdir = removeTrailingSeparator(projectrootdir);
-        var newroot = projectrootdir.substr(projectrootdir.lastIndexOf(path.sep) + 1);
-        var filenamechildpath = newfilepath.substring(newfilepath.lastIndexOf(newroot));
-        var pathSepRegEx = /\//g;
-        if (os.platform() === "win32")
-            pathSepRegEx = /\\/g;
-        var namespace = path.dirname(filenamechildpath);
-        namespace = namespace.replace(pathSepRegEx, '.');
-        namespace = namespace.replace(/\s+/g, "_");
-        namespace = namespace.replace(/-/g, "_");
-        newfilepath = path.basename(newfilepath, '.cs');
-        openTemplateAndSaveNewFile(templatetype, namespace, newfilepath, originalfilepath);
-    });
-}
-function correctExtension(filename) {
-    if (path.extname(filename) !== '.cs') {
-        if (filename.endsWith('.')) {
-            filename = filename + 'cs';
-        }
-        else {
-            filename = filename + '.cs';
-        }
-    }
-    return filename;
 }
 function removeTrailingSeparator(filepath) {
     if (filepath[filepath.length - 1] === path.sep) {
@@ -265,11 +283,8 @@ function openTemplateAndSaveNewFile(templateFileName, destinationFileName, names
     vscode.workspace.openTextDocument(`${vscode.extensions.getExtension('ivanpaulovich.clean-architecture-csharp-snippets').extensionPath}${path.sep}src${path.sep}templates${path.sep}${templateFileName}`)
         .then((doc) => {
         let text = doc.getText();
-        text = text.replace('${namespace}', namespace);
-        text = text.replace('${classname}', input);
-        text = text.replace('${interfacename}', input);
-        text = text.replace('${structname}', input);
-        text = text.replace('${structname}', input);
+        text = text.split('${namespace}').join(namespace);
+        text = text.split('${inputname}').join(input);
         let cursorPosition = findCursorInTemplate(text);
         text = text.replace('${cursor}', '');
         fs.writeFileSync(destinationFileName, text);

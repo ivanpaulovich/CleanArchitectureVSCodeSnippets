@@ -1,6 +1,6 @@
 {
     "Entity": {
-        "prefix": "entity",
+        "prefix": "abstractentity",
         "body": [
             "abstract class ${1:Name} : I${2:Name}",
             "{",
